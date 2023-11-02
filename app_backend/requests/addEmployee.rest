@@ -1,0 +1,16 @@
+GET http://localhost:3000/api/employees
+
+###
+POST http://localhost:3000/api/employees
+Content-Type: application/json
+
+{
+    "firstname": "John",
+    "lastname": "Doe",
+    "dateofbirth": "2000-04-09",
+    "jobtitle": "designer",
+    "phonenumber":"364646464",
+    "email": "abc@abc.com",
+    "address": "abc, qwerty" 
+    
+}

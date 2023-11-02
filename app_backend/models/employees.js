@@ -15,21 +15,24 @@ mongoose.connect(url)
 const employeeSchema = new mongoose.Schema({
     firstname: {
         type: String,
+        required: true
     },
     lastname: {
         type: String
     },
     dateofbirth: {
-        type: Date
+        type: String
     },
     jobtitle: {
-        type: String
+        type: String,
+        required: true
     },
     email: {
-        type: String
+        type: String,
     },
     phonenumber: {
-        type: Number
+        type: Number,
+        required: true
     },
     address: {
         type: String
