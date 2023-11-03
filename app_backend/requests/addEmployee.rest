@@ -5,12 +5,24 @@ POST http://localhost:3000/api/employees
 Content-Type: application/json
 
 {
-    "firstname": "John",
-    "lastname": "Doe",
-    "dateofbirth": "2000-04-09",
+    "firstname": "Anita",
+    "lastname": "S",
+    "dateofbirth": "12-12-2003",
     "jobtitle": "designer",
-    "phonenumber":"364646464",
-    "email": "abc@abc.com",
-    "address": "abc, qwerty" 
+    "phonenumber":"3434343",
+    "email": "fgfgfg@abc.com",
+    "address": "jhjhjhj, qwerty" 
     
+}
+
+###
+DELETE http://localhost:3000/api/employees/6543d138ebf1068dcf2e2712
+
+###
+PUT http://localhost:3000/api/employees/6543f15b180158bace909647
+Content-Type: application/json
+
+{
+    "phonenumber": "11111111",
+    "lastname": "Samuels"
 }

@@ -5,6 +5,8 @@ const app = express()
 const cors = require('cors')
 app.use(cors())
 app.use(express.json())
+var mongoose = require('mongoose'); 
+var ObjectId = mongoose.Types.ObjectId;
 
 app.get('/api/employees', (request, response) => {
     Employee.find({}).then(employees => {
@@ -26,6 +28,34 @@ app.post('/api/employees', (request, response) => {
     newEmployee.save().then(savedPerson => {
         response.json(savedPerson)
     })
+    .catch(error => {
+        console.log(error.message)
+    })
+})
+
+app.delete('/api/employees/:id', async (request, response) => {
+    const { id } = request.params;
+    const post = await Employee.findById(id).exec()
+    const result = await post.deleteOne()
+    .then(result => {
+        response.status(204).end()
+    })
+})
+
+app.put('/api/employees/:id', async(request, response) => {
+    const { firstname,
+            lastname,
+            phonenumber,
+            email,
+            address,
+            jobtitle } = request.body
+
+    Employee.findByIdAndUpdate(request.params.id,
+        { firstname, lastname, phonenumber, email, address, jobtitle },
+        { new: true, runValidators: true, context:'query' })
+    .then(updatedEmployee => {
+          response.json(updatedEmployee)
+     })
     .catch(error => {
         console.log(error.message)
     })

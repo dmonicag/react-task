@@ -1,10 +1,11 @@
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
-import { useState } from 'react';
-import employeeService from '../services/employee';
 
-const NewEmployeeForm = ({employees, setEmployees}) => {
+import { useState } from 'react';
+//import employeeService from '../services/employee';
+
+const NewEmployeeForm = ({onCancel, onSubmit }) => {
     const [firstname, setFirstName] = useState('')
     const [lastname, setLastName] = useState('')
     const [birthdate, setBirthDate] = useState('')
@@ -15,7 +16,16 @@ const NewEmployeeForm = ({employees, setEmployees}) => {
 
     const add_employee = async (event) =>{
         event.preventDefault()
-        const new_employee = { 
+        onSubmit({
+            firstname,
+            lastname,
+            birthdate,
+            jobtitle,
+            phonenumber,
+            email,
+            address
+        })
+        /*const new_employee = { 
             firstname: firstname,
             lastname: lastname,
             dateofbirth: birthdate,
@@ -36,11 +46,12 @@ const NewEmployeeForm = ({employees, setEmployees}) => {
           setFirstName('')
           setLastName('')
           setPhoneNumber('')
-      }
+      }*/
+    }
 
     return(
         <div>
-            <h1>Add Employee:</h1>
+            
             <div>
                 <form onSubmit={add_employee}>                
                 <TextField 
@@ -80,6 +91,7 @@ const NewEmployeeForm = ({employees, setEmployees}) => {
                     onChange={({target}) => setAddress(target.value)}>
                 </TextField>
                 <Button type="submit">Add Employee</Button>
+                <Button variant='contained' onClick={onCancel}>Close</Button>
             </form>
             </div>
         </div>

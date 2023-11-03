@@ -11,6 +11,21 @@ const addEmployee = newEmployee => {
     const request = axios.post(baseUrl, newEmployee)
     return request.then(response => {return response.data})
 }
+
+const deleteEmployee = async (id) => {
+    console.log("id", id)
+    const response = await axios.delete(`${baseUrl}/${id}`)
+    //return request.then(response => {return response.data})
+    return response.data
+}
+
+const updateEmployee = (id, updateEmployee) => {
+    const request = axios.put(`${baseUrl}/${id}`, updateEmployee)
+    return request.then(response => {return response.data})
+}
 export default { 
     getEmployees,
-    addEmployee }
+    addEmployee,
+    deleteEmployee,
+    updateEmployee
+ }
