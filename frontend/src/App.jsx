@@ -10,6 +10,7 @@ const App = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [notification, setNotification] = useState(null)
   const [error_notification, setError] = useState(null)
+  const [toEdit, setToEdit] = useState({})
 
   useEffect(() => {
     employeeService
@@ -30,7 +31,7 @@ const App = () => {
         }, 5000)
       })
       .catch(error => {
-        setError(`Contact already deleted`)
+        setError(error.message)
         setTimeout(() => {
           setError(null)
         }, 5000)
@@ -56,13 +57,13 @@ const App = () => {
     }
   }
 
-  const handleEdit = (id) => {
-    //const emp_to_edit = employees.find(e => e.id === id)
-    //console.log(emp_to_edit)
-    //setRowtoedit(employees.find(e => e.id === id))
-    //setRowtoedit(id)
+  const handleEdit = async (id) => {
     setModalOpen(true)
+    const emp_to_edit = employees.find((e) => e.id === id)
+    setToEdit(emp_to_edit)
   }
+
+  console.log('set', toEdit)
 
   return(
     <div>
@@ -76,6 +77,7 @@ const App = () => {
           setModalOpen(false)
         }}
         onSubmit={handleSubmit}
+        defaultValue={toEdit !== null && toEdit}
       />
       }
     </div>

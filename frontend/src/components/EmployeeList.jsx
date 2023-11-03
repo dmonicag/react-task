@@ -22,7 +22,7 @@ const EmployeeList = ({ employees, deleteItem, editItem }) => {
                     return <tr key={e.id}>
                         <td>{e.firstname}</td>
                         <td>{e.lastname}</td>
-                        <td>{e.dateofbirtd}</td>
+                        <td>{e.dateofbirth}</td>
                         <td>{e.jobtitle}</td>
                         <td>{e.phonenumber}</td>
                         <td>{e.email}</td>

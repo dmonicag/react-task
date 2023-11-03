@@ -2,9 +2,11 @@
 import { useState } from 'react'
 import './Modal.css'
 
-const Modal = ({ closeModal, onSubmit }) => {
+const Modal = ({ closeModal, onSubmit, defaultvalue }) => {
 
-    const [formState, setFormState] = useState({
+    const [formState, setFormState] = useState(
+        defaultvalue || 
+        {
         firstname: "",
         lastname: "",
         dateofbirth: "",
