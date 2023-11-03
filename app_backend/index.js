@@ -6,7 +6,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 var mongoose = require('mongoose'); 
-var ObjectId = mongoose.Types.ObjectId;
+const middleware = require('./utils')
 
 app.get('/api/employees', (request, response) => {
     Employee.find({}).then(employees => {
@@ -26,10 +26,14 @@ app.post('/api/employees', (request, response) => {
         address: body.address
     })
     newEmployee.save().then(savedPerson => {
-        response.json(savedPerson)
+        response.status(201).json(savedPerson)
     })
     .catch(error => {
-        console.log(error.message)
+        response.status(400)
+      .json({
+        error: 'data missing'
+      })
+        //console.log(error.message)
     })
 })
 
@@ -60,6 +64,8 @@ app.put('/api/employees/:id', async(request, response) => {
         console.log(error.message)
     })
 })
+
+app.use(middleware.errorHandler)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
