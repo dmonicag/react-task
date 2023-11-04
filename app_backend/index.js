@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('express-async-errors')
 const express = require('express')
 const Employee = require('./models/employees')
 const app = express()
@@ -9,12 +10,14 @@ var mongoose = require('mongoose');
 const middleware = require('./utils')
 
 app.get('/api/employees', (request, response) => {
-    Employee.find({}).then(employees => {
-        response.json(employees)
-    })
+    Employee
+        .find({})
+        .then(employees => {
+            response.json(employees)
+        })
 })
 
-app.post('/api/employees', (request, response) => {
+app.post('/api/employees', async (request, response) => {
     const body = request.body
     const newEmployee = new Employee({
         firstname: body.firstname,
@@ -25,25 +28,21 @@ app.post('/api/employees', (request, response) => {
         phonenumber: body.phonenumber,        
         address: body.address
     })
-    newEmployee.save().then(savedPerson => {
-        response.status(201).json(savedPerson)
-    })
-    .catch(error => {
-        response.status(400)
-      .json({
-        error: 'data missing'
-      })
-        //console.log(error.message)
-    })
+    if(!newEmployee.firstname || !newEmployee.jobtitle || !newEmployee.phonenumber){
+        return response.status(400)
+        .json({
+            error: "Please fill in all the required fields"
+        })
+    }
+    const saved_employee = await newEmployee.save()
+    response.status(201).json(saved_employee)
 })
 
 app.delete('/api/employees/:id', async (request, response) => {
     const { id } = request.params;
     const post = await Employee.findById(id).exec()
-    const result = await post.deleteOne()
-    .then(result => {
-        response.status(204).end()
-    })
+    await post.deleteOne()
+    response.status(204).end()
 })
 
 app.put('/api/employees/:id', async(request, response) => {
@@ -54,15 +53,17 @@ app.put('/api/employees/:id', async(request, response) => {
             address,
             jobtitle } = request.body
 
-    Employee.findByIdAndUpdate(request.params.id,
+    if(!firstname || !jobtitle || !phonenumber){
+        return response.status(400)
+            .json({
+                error: "Please fill in all the required fields"
+            })
+    }
+
+    await Employee.findByIdAndUpdate(request.params.id,
         { firstname, lastname, phonenumber, email, address, jobtitle },
         { new: true, runValidators: true, context:'query' })
-    .then(updatedEmployee => {
-          response.json(updatedEmployee)
-     })
-    .catch(error => {
-        console.log(error.message)
-    })
+    response.status(200).json(request.body)
 })
 
 app.use(middleware.errorHandler)

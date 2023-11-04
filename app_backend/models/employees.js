@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const validator = require('mongoose-unique-validator')
 mongoose.set('strictQuery', false)
 
 const url = process.env.MONGODB_URI
@@ -29,10 +30,12 @@ const employeeSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true
     },
     phonenumber: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     address: {
         type: String
@@ -47,4 +50,5 @@ employeeSchema.set('toJSON', {
     }
 })
 
+employeeSchema.plugin(validator)
 module.exports = mongoose.model('Employee', employeeSchema)
