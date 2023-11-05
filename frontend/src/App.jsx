@@ -37,40 +37,55 @@ const App = () => {
           }, 5000)
         })
     }
+    return employees
+  }
+
+  const addEmployeeDetail = (data) => {
+    try{
+      employeeService.addEmployee(data)
+      setEmployees(employees.concat(data))
+      setModalOpen(false)
+      setNotification('Employee added successfully')
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+    catch(error){
+      setError(error.message)
+      setTimeout(() => {
+        setError(null)
+      }, 5000)
+    }
+    return employees
+  }
+
+  const updateEmployeeDetail = (id, data) => {
+    try{
+      employeeService
+        .updateEmployee(id, data)
+        .then(edited_emp => {
+          setEmployees(employees.map(emp => emp.id !== emptoEdit.id ? emp : edited_emp))
+          setNotification('Employee detail updated successfully')
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        })
+    }
+    catch(error){
+      setError(error.message)
+      setTimeout(() => {
+        setError(null)
+      }, 5000)
+    }
+    return employees
   }
 
   const handleSubmit = async (newData) => {
     if(emptoEdit === null){
-      try{
-        await employeeService.addEmployee(newData)
-        setEmployees(employees.concat(newData))
-        setModalOpen(false)
-        setNotification('Employee added successfully')
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-      }
-      catch(error){
-        setError(error.response.data.error)
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
+      await addEmployeeDetail(newData)
     }
     else {
-      try{
-        await employeeService
-          .updateEmployee(newData.id, newData)
-          .then(edited_emp => {
-            setEmployees(employees.map(emp => emp.id !== newData.id ? emp : edited_emp))
-          })
-      }
-      catch(error){
-        setError(error.response.data.error)
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
+      await updateEmployeeDetail(emptoEdit.id, newData)
     }
   }
 
