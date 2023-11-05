@@ -22,3 +22,7 @@
     display: block;
     margin: auto;
 }
+
+input.input-error{
+    border-color: red;
+}

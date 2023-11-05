@@ -40,7 +40,7 @@ const App = () => {
   }
 
   const handleSubmit = async (newData) => {
-    if(Object.keys(emptoEdit).length === 0){
+    if(emptoEdit === null){
       try{
         await employeeService.addEmployee(newData)
         setEmployees(employees.concat(newData))
@@ -51,26 +51,32 @@ const App = () => {
         }, 5000)
       }
       catch(error){
-        setError(error.message)
+        setError(error.response.data.error)
         setTimeout(() => {
           setError(null)
         }, 5000)
       }
     }
     else {
-      await employeeService
-        .updateEmployee(newData.id, newData)
-        .then(edited_emp => {
-          setEmployees(employees.map(emp => emp.id !== newData.id ? emp : edited_emp))
-        })
+      try{
+        await employeeService
+          .updateEmployee(newData.id, newData)
+          .then(edited_emp => {
+            setEmployees(employees.map(emp => emp.id !== newData.id ? emp : edited_emp))
+          })
+      }
+      catch(error){
+        setError(error.response.data.error)
+        setTimeout(() => {
+          setError(null)
+        }, 5000)
+      }
     }
   }
 
   const handleEdit = async (id) => {
-    console.log('id', id)
     setModalOpen(true)
     const emp_to_edit = employees.find((e) => e.id === id)
-    console.log('set to edit', emp_to_edit)
     setEmpToEdit(emp_to_edit)
   }
 
@@ -84,8 +90,9 @@ const App = () => {
       <Modal
         closeModal={() => {
           setModalOpen(false)
+          setEmpToEdit(null)
         }}
-        onSubmit={handleSubmit}
+        subForm={handleSubmit}
         defaultValue={emptoEdit}
       />
       }
