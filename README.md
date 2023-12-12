@@ -9,5 +9,7 @@
 - yup
 - cors
 - dotenv
-**Frontend code -** (./react-task/frontend)
-**Backend code -** (./react-task/app-backend)
+##
+**Frontend code -** [./react-task/frontend](./react-task/frontend)
+##
+**Backend code -** [./react-task/app-backend](./react-task/app-backend)
